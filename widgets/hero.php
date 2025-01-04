@@ -110,7 +110,7 @@ class Exdos_Hero extends Widget_Base {
 		$this->start_controls_section(
 			'hero_section_content',
 			[
-				'label' => __( 'Demo Content', 'exdos-core' ),
+				'label' => __( 'Hero Content', 'exdos-core' ),
 			]
 		);
 
@@ -147,10 +147,106 @@ class Exdos_Hero extends Widget_Base {
 			]
 		);
 
+		$this->end_controls_section();
 
+
+		$this->start_controls_section(
+			'hero_button_content',
+			[
+				'label' => __( 'Button', 'exdos-core' ),
+			]
+		);
+
+		$this->add_control(
+			'exdos_button',
+			[
+				'label' => __( 'Button Text', 'exdos-core' ),
+				'type' => Controls_Manager::TEXT,
+				'default' => esc_html__( 'This is button text' ),
+				'label_block' => true,
+			]
+		);
+
+		$this->add_control(
+			'exdos_button_url',
+			[
+				'label' => esc_html__( 'Link', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::URL,
+				'options' => [ 'url', 'is_external', 'nofollow' ],
+				'default' => [
+					'url' => '#',
+					'is_external' => false,
+					'nofollow' => false,
+					// 'custom_attributes' => '',
+				],
+				'label_block' => true,
+			]
+		);
 
 		$this->end_controls_section();
 
+
+		// start repeater control
+		$this->start_controls_section(
+			'hero_social_section',
+			[
+				'label' => esc_html__( 'Social', 'textdomain' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'social_content',
+			[
+				'label' => __( 'Social Content', 'exdos-core' ),
+				'type' => Controls_Manager::TEXTAREA,
+				'default' => esc_html__( '2k+ company trust us', 'textdomain' ),
+				'label_block' => true,
+			]
+		);
+
+		$repeater = new \Elementor\Repeater();
+
+		$repeater->add_control(
+			'social_name',
+			[
+				'label' => esc_html__( 'Name', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Fb' , 'textdomain' ),
+				'label_block' => true,
+			]
+		);
+
+		$repeater->add_control(
+			'social_url',
+			[
+				'label' => esc_html__( 'URL', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( '#' , 'textdomain' ),
+				'label_block' => true,
+			]
+		);
+
+
+		$this->add_control(
+			'social_list',
+			[
+				'label' => esc_html__( 'Social Repeater List', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
+				'default' => [
+					[
+						'social_name' => esc_html__( 'Fb', 'textdomain' ),
+					],
+					[
+						'social_name' => esc_html__( 'Tw', 'textdomain' ),
+					],
+				],
+				'title_field' => '{{{ social_name }}}',
+			]
+		);
+
+		$this->end_controls_section();
 		
 	}
 
@@ -200,6 +296,11 @@ class Exdos_Hero extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 
+		if ( ! empty( $settings['exdos_button'] ) ) {	
+			$this->add_link_attributes( 'button_arg', $settings['exdos_button_url'] );
+			$this->add_render_attribute('button_arg', 'class', 'tp-btn-sec tp-btn-sec-lg');
+		}	
+
 		?>
 
 
@@ -213,16 +314,23 @@ class Exdos_Hero extends Widget_Base {
 						</div>
 						<div class="hero-info d-none d-xxl-flex">
 							<div class="hero-social">
-								<span>Follow Us - </span>
-								<a href="#">Fb</a>/
-								<a href="#">Tw</a>/
-								<a href="#">in</a>/
-								<a href="#">Be</a>
+								<span><?php echo esc_html__('Follow Us - ', 'exdos-core'); ?></span>
+
+								<?php foreach($settings['social_list'] as $item) : ?>
+								<a href="<?php echo esc_url($item['social_url']); ?>"><?php echo esc_html($item['social_name']); ?></a>
+								<?php endforeach; ?>
+								
 							</div>
+
+							<?php if(!empty($settings['social_content'])) : ?>
 							<div class="hero-info-text">
-								<span>2k+ company trust us</span>
+								<span><?php echo esc_html($settings['social_content'])?></span>
 							</div>
+
+							<?php endif; ?>
 						</div>
+
+						
 						<div class="container">
 							<div class="tp-hero p-relative z-index-11">
 								<div class="mb-30">
@@ -233,15 +341,20 @@ class Exdos_Hero extends Widget_Base {
 
 									<h1 class="tp-hero-title wow img-custom-anim-right" data-wow-duration="1.5s" data-wow-delay="0.4s"><?php echo exdos_core_kses($settings['main_title_2'])?></h1>
 								</div>
+
+								<?php if(!empty($settings['exdos_button'])) : ?>
 								<div class="tp-hero-btn wow img-custom-anim-top" data-wow-duration="1.5s" data-wow-delay="0.9s">
-									<a href="about.html" class="tp-btn-sec tp-btn-sec-lg" >
+									<a <?php echo $this->get_render_attribute_string('button_arg'); ?>>
 										<span class="tp-btn-wrap">
-											<span class="tp-btn-y-1">Discover More</span>
-											<span class="tp-btn-y-2">Discover More</span>
+											<span class="tp-btn-y-1"><?php echo esc_html($settings['exdos_button']); ?></span>
+											<span class="tp-btn-y-2"><?php echo esc_html($settings['exdos_button']); ?></span>
 										</span>  
 										<i></i>
 									</a>
 								</div>
+								<?php endif; ?>
+
+
 							</div>
 						</div>
 			</section>
