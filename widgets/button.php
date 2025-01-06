@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Hello_World extends Widget_Base {
+class Exdos_Button extends Widget_Base {
 
 	/**
 	 * Retrieve the widget name.
@@ -25,7 +25,7 @@ class Hello_World extends Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'hello-world';
+		return 'exdos-button';
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Hello_World extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return __( 'Hello World', 'exdos-core' );
+		return __( 'Exdos Button', 'exdos-core' );
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Hello_World extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general' ];
+		return [ 'exdos-category' ];
 	}
 
 	/**
@@ -96,23 +96,56 @@ class Hello_World extends Widget_Base {
 	 *
 	 * @access protected
 	 */
-	protected function register_controls() {
+
+	 protected function register_controls() {
+
+		$this->register_controls_section();
+		$this->style_tab_controls();
+
+	 }
+
+
+	//  register controls section
+	protected function register_controls_section() {
 		$this->start_controls_section(
-			'section_content',
+			'exdos_button_section',
 			[
-				'label' => __( 'Content', 'exdos-core' ),
+				'label' => __( 'Button', 'exdos-core' ),
 			]
 		);
 
 		$this->add_control(
-			'title',
+			'exdos_button',
 			[
-				'label' => __( 'Title', 'exdos-core' ),
+				'label' => __( 'Button Text', 'exdos-core' ),
 				'type' => Controls_Manager::TEXT,
+				'default' => esc_html__( 'This is button text' ),
+				'label_block' => true,
+			]
+		);
+
+		$this->add_control(
+			'exdos_button_url',
+			[
+				'label' => esc_html__( 'Link', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::URL,
+				'options' => [ 'url', 'is_external', 'nofollow' ],
+				'default' => [
+					'url' => '#',
+					'is_external' => false,
+					'nofollow' => false,
+					// 'custom_attributes' => '',
+				],
+				'label_block' => true,
 			]
 		);
 
 		$this->end_controls_section();
+		
+	}
+
+	// style tab controls section
+	protected function style_tab_controls() {
 
 		$this->start_controls_section(
 			'section_style',
@@ -141,7 +174,9 @@ class Hello_World extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
 	}
+
 
 	/**
 	 * Render the widget output on the frontend.
@@ -155,9 +190,28 @@ class Hello_World extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 
-		echo '<div class="title">';
-		echo $settings['title'];
-		echo '</div>';
+		if ( ! empty( $settings['exdos_button'] ) ) {	
+			$this->add_link_attributes( 'button_arg', $settings['exdos_button_url'] );
+			$this->add_render_attribute('button_arg', 'class', 'tp-btn');
+		}	
+
+		?>
+
+				<?php if(!empty($settings['exdos_button'])) : ?>
+
+				<div class="tp-exdos-btn">
+					<a <?php echo $this->get_render_attribute_string('button_arg'); ?>>
+						<span class="tp-btn-wrap">
+							<span class="tp-btn-y-1"><?php echo esc_html($settings['exdos_button']); ?></span>
+							<span class="tp-btn-y-2"><?php echo esc_html($settings['exdos_button']); ?></span>
+						</span>  
+						<i></i> 
+					</a>
+				</div>
+
+				<?php endif; ?>
+
+		<?php
 	}
 
 	/**
@@ -177,3 +231,6 @@ class Hello_World extends Widget_Base {
 		<?php
 	}
 }
+
+
+$widgets_manager->register( new Exdos_Button() );

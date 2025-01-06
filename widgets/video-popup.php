@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Hello_World extends Widget_Base {
+class Exdos_Video_Popup extends Widget_Base {
 
 	/**
 	 * Retrieve the widget name.
@@ -25,7 +25,7 @@ class Hello_World extends Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'hello-world';
+		return 'exdos-video';
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Hello_World extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return __( 'Hello World', 'exdos-core' );
+		return __( 'Exdos Video', 'exdos-core' );
 	}
 
 	/**
@@ -69,7 +69,7 @@ class Hello_World extends Widget_Base {
 	 * @return array Widget categories.
 	 */
 	public function get_categories() {
-		return [ 'general' ];
+		return [ 'exdos-category' ];
 	}
 
 	/**
@@ -96,23 +96,50 @@ class Hello_World extends Widget_Base {
 	 *
 	 * @access protected
 	 */
-	protected function register_controls() {
+
+	 protected function register_controls() {
+
+		$this->register_controls_section();
+		$this->style_tab_controls();
+
+	 }
+
+
+	//  register controls section
+	protected function register_controls_section() {
 		$this->start_controls_section(
-			'section_content',
+			'video_section',
 			[
-				'label' => __( 'Content', 'exdos-core' ),
+				'label' => __( 'Video', 'exdos-core' ),
 			]
 		);
 
 		$this->add_control(
-			'title',
+			'exdos_title',
 			[
-				'label' => __( 'Title', 'exdos-core' ),
+				'label' => __( 'Main Title', 'exdos-core' ),
 				'type' => Controls_Manager::TEXT,
+				'default' => esc_html__( 'Main Tittle', 'textdomain' ),
+				'label_block' => true,
+			]
+		);
+	
+		$this->add_control(
+			'exdos_video_url',
+			[
+				'label' => esc_html__( 'Video URL', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( '#', 'textdomain' ),
+				'label_block' => true,
 			]
 		);
 
 		$this->end_controls_section();
+		
+	}
+
+	// style tab controls section
+	protected function style_tab_controls() {
 
 		$this->start_controls_section(
 			'section_style',
@@ -141,7 +168,9 @@ class Hello_World extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+
 	}
+
 
 	/**
 	 * Render the widget output on the frontend.
@@ -155,9 +184,20 @@ class Hello_World extends Widget_Base {
 	protected function render() {
 		$settings = $this->get_settings_for_display();
 
-		echo '<div class="title">';
-		echo $settings['title'];
-		echo '</div>';
+		?>
+		<?php if(!empty($settings['exdos_video_url'])) : ?>
+			<div class="tp-about-video-info d-flex align-items-center mb-27">
+				<div class="tp-about-video-icon mr-15">
+					<a class="popup-video" href="<?php echo esc_url($settings['exdos_video_url'])?>"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/play.svg" alt=""></a>
+				</div>
+
+				<?php if(!empty($settings['exdos_title'])) : ?>
+				<h4 class="m-0"><?php echo exdos_core_kses($settings['exdos_title'])?></h4>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
+
+		<?php
 	}
 
 	/**
@@ -177,3 +217,6 @@ class Hello_World extends Widget_Base {
 		<?php
 	}
 }
+
+
+$widgets_manager->register( new Exdos_Video_Popup() );

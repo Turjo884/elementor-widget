@@ -107,6 +107,7 @@ class Exdos_Hero extends Widget_Base {
 
 	//  register controls section
 	protected function register_controls_section() {
+		// Start Text Section
 		$this->start_controls_section(
 			'hero_section_content',
 			[
@@ -135,21 +136,10 @@ class Exdos_Hero extends Widget_Base {
 			]
 		);
 
-	
-		$this->add_control(
-			'content',
-			[
-				'label' => esc_html__( 'Content', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::TEXTAREA,
-				'rows' => 10,
-				'default' => esc_html__( 'Default description', 'textdomain' ),
-				'placeholder' => esc_html__( 'Type your description here', 'textdomain' ),
-			]
-		);
-
 		$this->end_controls_section();
+		// End Text Section
 
-
+		// Start Button Section
 		$this->start_controls_section(
 			'hero_button_content',
 			[
@@ -184,6 +174,7 @@ class Exdos_Hero extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+		// End Button Section
 
 
 		// start repeater control
@@ -281,6 +272,29 @@ class Exdos_Hero extends Widget_Base {
 
 		$this->end_controls_section();
 
+
+		// Hero Sectio Background Image 
+		$this->start_controls_section(
+			'hero_bg_section',
+			[
+				'label' => esc_html__( 'Bg Image', 'textdomain' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$this->add_control(
+			'bg_image',
+			[
+				'label' => esc_html__( 'Choose Image', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::MEDIA,
+				'default' => [
+					'url' => \Elementor\Utils::get_placeholder_image_src(),
+				],
+			]
+		);
+
+		$this->end_controls_section();
+
 	}
 
 
@@ -304,13 +318,13 @@ class Exdos_Hero extends Widget_Base {
 		?>
 
 
-			<section class="tp-hero-area tp-hero-space tp-black-bg pt-265 pb-170 p-relative " style="background-image: url(assets/img/shape/hero-1-bg-shape.png);">
+			<section class="tp-hero-area tp-hero-space tp-black-bg pt-265 pb-170 p-relative " style="background-image: url(<?php echo esc_url($settings['bg_image']['url']); ?>);">
 						<div class="tp-hero-shape">
-							<img class="tp-hero-shape-1 p-absolute" src="assets/img/shape/hero-1-ball-shape.png" alt="">
-							<img class="tp-hero-shape-2 p-absolute d-none d-xl-block" src="assets/img/shape/hero-1-large-shape.png" alt="">
-							<img class="tp-hero-shape-3 p-absolute" src="assets/img/shape/hero-sm-circle.png" alt="">
-							<img class="tp-hero-shape-4 p-absolute d-none d-md-block" src="assets/img/shape/hero-1-shape-2.png" alt="">
-							<img class="tp-hero-shape-5 p-absolute d-none d-md-block" src="assets/img/shape/hero-1-circle-3.png" alt="">
+							<img class="tp-hero-shape-1 p-absolute" src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/hero-1-ball-shape.png" alt="">
+							<img class="tp-hero-shape-2 p-absolute d-none d-xl-block" src="<?php echo get_template_directory_uri(); ?>assets/img/shape/hero-1-large-shape.png" alt="">
+							<img class="tp-hero-shape-3 p-absolute" src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/hero-sm-circle.png" alt="">
+							<img class="tp-hero-shape-4 p-absolute d-none d-md-block" src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/hero-1-shape-2.png" alt="">
+							<img class="tp-hero-shape-5 p-absolute d-none d-md-block" src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/hero-1-circle-3.png" alt="">
 						</div>
 						<div class="hero-info d-none d-xxl-flex">
 							<div class="hero-social">
