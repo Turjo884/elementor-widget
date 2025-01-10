@@ -103,6 +103,8 @@ class Plugin {
 	 */
 	public function register_widgets( $widgets_manager ) {
 		// Its is now safe to include Widgets files
+		require_once( __DIR__ . '/widgets/testimonial-slider.php' );
+		require_once( __DIR__ . '/widgets/service-box.php' );
 		require_once( __DIR__ . '/widgets/video-popup.php' );
 		require_once( __DIR__ . '/widgets/exdos-image.php' );
 		require_once( __DIR__ . '/widgets/button.php' );
