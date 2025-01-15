@@ -108,7 +108,7 @@ class Exdos_Image extends Widget_Base {
 	//  register controls section
 	protected function register_controls_section() {
 
-		//  Image Section
+		//  Start Image Section
 		$this->start_controls_section(
 			'exdos_image_section',
 			[
@@ -129,6 +129,7 @@ class Exdos_Image extends Widget_Base {
 		);
 
 		$this->end_controls_section();
+		// End Image Section
 		
 	}
 
