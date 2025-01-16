@@ -108,6 +108,60 @@ class Exdos_Project_Tab extends Widget_Base {
 	//  register controls section
 	protected function register_controls_section() {
 
+		// start repeater control
+		$this->start_controls_section(
+			'project_tab_section',
+			[
+				'label' => esc_html__( 'Project List', 'textdomain' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+
+		$repeater = new \Elementor\Repeater();
+
+		$repeater->add_control(
+			'exdos_title',
+			[
+				'label' => esc_html__( 'List Item', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => esc_html__( 'Branding Design' , 'textdomain' ),
+				'label_block' => true,
+			]
+		);
+
+		$repeater->add_control(
+			'exdos_image',
+			[
+				'label' => esc_html__( 'Choose Image', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::MEDIA,
+				'default' => [
+					'url' => \Elementor\Utils::get_placeholder_image_src(),
+				],
+			]
+		);
+
+		$this->add_control(
+			'project_list',
+			[
+				'label' => esc_html__( 'Project List', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::REPEATER,
+				'fields' => $repeater->get_controls(),
+				'default' => [
+					[
+						'exdos_title' => esc_html__( 'Brand Design', 'textdomain' ),
+					],
+					[
+						'exdos_title' => esc_html__( 'Digital Thinker', 'textdomain' ),
+					],
+				],
+				'title_field' => '{{{ exdos_title }}}',
+			]
+		);
+
+		$this->end_controls_section();
+		// end repeater control
+
+
 		// Start Button Section
 		$this->start_controls_section(
 			'project_button',
@@ -144,60 +198,6 @@ class Exdos_Project_Tab extends Widget_Base {
 
 		$this->end_controls_section();
 		// End Button Section
-
-
-		// start repeater control
-		$this->start_controls_section(
-			'project-tab_section',
-			[
-				'label' => esc_html__( 'Project List', 'textdomain' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$repeater = new \Elementor\Repeater();
-
-		$repeater->add_control(
-			'exdos-title',
-			[
-				'label' => esc_html__( 'List Item', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'Branding Design' , 'textdomain' ),
-				'label_block' => true,
-			]
-		);
-
-		$repeater->add_control(
-			'exdos_image',
-			[
-				'label' => esc_html__( 'Choose Image', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::MEDIA,
-				'default' => [
-					'url' => \Elementor\Utils::get_placeholder_image_src(),
-				],
-			]
-		);
-
-		$this->add_control(
-			'project_list',
-			[
-				'label' => esc_html__( 'Project List', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::REPEATER,
-				'fields' => $repeater->get_controls(),
-				'default' => [
-					[
-						'exdos-title' => esc_html__( 'Brand Design', 'textdomain' ),
-					],
-					[
-						'exdos-title' => esc_html__( 'Digital Thinker', 'textdomain' ),
-					],
-				],
-				'title_field' => '{{{ exdos-title }}}',
-			]
-		);
-
-		$this->end_controls_section();
-		// end repeater control
 		
 	}
 
@@ -267,7 +267,7 @@ class Exdos_Project_Tab extends Widget_Base {
 								<?php foreach($settings['project_list'] as $key => $item) : 
 									$active = ($key == 0) ? 'active' : '';
 								?>
-                                  <button class="nav-links <?php echo esc_attr($active); ?>" id="nav-home-tab-<?php echo esc_attr($key); ?>" data-bs-toggle="tab" data-bs-target="#nav-home-<?php echo esc_attr($key); ?>" type="button" role="tab" aria-controls="nav-home-<?php echo esc_attr($key); ?>" aria-selected="true"><?php echo esc_html($item['exdos-title']); ?></button>
+                                  <button class="nav-links <?php echo esc_attr($active); ?>" id="nav-home-tab-<?php echo esc_attr($key); ?>" data-bs-toggle="tab" data-bs-target="#nav-home-<?php echo esc_attr($key); ?>" type="button" role="tab" aria-controls="nav-home-<?php echo esc_attr($key); ?>" aria-selected="true"><?php echo esc_html($item['exdos_title']); ?></button>
 								<?php endforeach; ?>
                                   
                                 <!-- </div> -->
@@ -275,22 +275,22 @@ class Exdos_Project_Tab extends Widget_Base {
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="tp-project-tab-content pl-30 text-end mt-50">
+                        <div class="tp-project-tab-content pl-30 text-end">
                             <div class="tab-content" id="nav-tabContent">
 
 								<?php foreach($settings['project_list'] as $key => $item) : 
 									$active = ($key == 0) ? 'show active' : '';
 								?>
-                                <div class="tab-pane fade <?php echo esc_attr($key); ?>" id="nav-home-<?php echo esc_attr($key); ?>" role="tabpanel" aria-labelledby="nav-home-tab-<?php echo esc_attr($key); ?>" tabindex="0">
+                                <div class="tab-pane fade <?php echo esc_attr($active); ?>" id="nav-home-<?php echo esc_attr($key); ?>" role="tabpanel" aria-labelledby="nav-home-tab-<?php echo esc_attr($key); ?>" tabindex="0">
                                     <div class="tp-project-tab-thumb">
                                         <a class="popup-image" href="assets/img/project/project-tab-1.jpg"><img src="assets/img/project/project-tab-1.jpg" alt=""></a>
                                     </div>
-                                </div>
-								<!-- Strt mage -->
+								<!-- Strt Popup Image -->
                                     <div class="tp-project-tab-thumb">
                                         <a class="popup-image" href="<?php echo esc_url($item['exdos_image']['url']); ?>"><img src="<?php echo esc_url($item['exdos_image']['url']); ?>" alt=""></a>
                                     </div>
-								<!-- End Image -->
+								</div>
+								<!-- End Popup Image -->
 							<?php endforeach; ?>
 
                             </div>
