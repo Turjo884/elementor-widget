@@ -107,6 +107,37 @@ class Exdos_Video_Popup extends Widget_Base {
 
 	//  register controls section
 	protected function register_controls_section() {
+
+
+		// Start Brand Slider 1
+		$this->start_controls_section(
+			'design_section',
+			[
+				'label' => esc_html__( 'Design Style', 'textdomain' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+		// End Brand Slider 1
+
+		// Start Control Part
+		$this->add_control(
+			'layout',
+			[
+				'label' => esc_html__( 'Layout Style', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::SELECT,
+				'default' => 'style-1',
+				'options' => [
+					'' => esc_html__( 'Default', 'textdomain' ),
+					'style-1' => esc_html__( 'Layout 01', 'textdomain' ),
+					'style-2'  => esc_html__( 'Layout 02', 'textdomain' ),
+				],
+			]
+		);
+		
+		$this->end_controls_section();
+        // End Control Part
+
+
 		$this->start_controls_section(
 			'video_section',
 			[
@@ -131,6 +162,32 @@ class Exdos_Video_Popup extends Widget_Base {
 				'type' => \Elementor\Controls_Manager::TEXT,
 				'default' => esc_html__( '#', 'textdomain' ),
 				'label_block' => true,
+			]
+		);
+
+		$this->end_controls_section();
+
+
+		// Hero Sectio Background Image 
+		$this->start_controls_section(
+			'image_section',
+			[
+				'label' => esc_html__( 'Image', 'textdomain' ),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+				'condition' => [
+			       'layout' => 'style-2',
+		],
+			]
+		);
+
+		$this->add_control(
+			'image',
+			[
+				'label' => esc_html__( 'Choose Image', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::MEDIA,
+				'default' => [
+					'url' => \Elementor\Utils::get_placeholder_image_src(),
+				],
 			]
 		);
 
@@ -185,16 +242,32 @@ class Exdos_Video_Popup extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 
 		?>
+
+		<!-- For Video Slider Start -->
+		<?php if($settings['layout'] == 'style-2') : ?>
+
+			<div class="tp-video-area jarallax" style="background-image: url('<?php echo esc_url($settings['image']['url']); ?>');">
+				<div class="tp-play-btn text-center">
+					<a class="popup-video" href="<?php echo esc_url($settings['exdos_video_url']); ?>"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/icon/play.png" alt=""></a>
+				</div>
+           </div>
+
+		
+		<!-- For Video Slider End -->
+		<?php else : ?>
+
 		<?php if(!empty($settings['exdos_video_url'])) : ?>
 			<div class="tp-about-video-info d-flex align-items-center mb-27">
 				<div class="tp-about-video-icon mr-15">
-					<a class="popup-video" href="<?php echo esc_url($settings['exdos_video_url'])?>"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/play.svg" alt=""></a>
+					<a class="popup-video" href="<?php echo esc_url($settings['exdos_video_url']); ?>"><img src="<?php echo get_template_directory_uri(); ?>/assets/img/shape/play.svg" alt=""></a>
 				</div>
 
 				<?php if(!empty($settings['exdos_title'])) : ?>
 				<h4 class="m-0"><?php echo exdos_core_kses($settings['exdos_title'])?></h4>
 				<?php endif; ?>
 			</div>
+		<?php endif; ?>
+
 		<?php endif; ?>
 
 		<?php
