@@ -103,6 +103,9 @@ class Plugin {
 	 */
 	public function register_widgets( $widgets_manager ) {
 		// Its is now safe to include Widgets files
+		require_once( __DIR__ . '/widgets/award.php' );
+		require_once( __DIR__ . '/widgets/featured-item.php' );
+		require_once( __DIR__ . '/widgets/pricing-table.php' );
 		require_once( __DIR__ . '/widgets/portfolio-post.php' );
 		require_once( __DIR__ . '/widgets/skill-bar.php' );
 		require_once( __DIR__ . '/widgets/faq-list.php' );
