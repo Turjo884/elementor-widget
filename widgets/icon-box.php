@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @since 1.0.0
  */
-class Exdos_Service_Box extends Widget_Base {
+class Exdos_Icon_Box extends Widget_Base {
 
 	/**
 	 * Retrieve the widget name.
@@ -25,7 +25,7 @@ class Exdos_Service_Box extends Widget_Base {
 	 * @return string Widget name.
 	 */
 	public function get_name() {
-		return 'exdos-services-box';
+		return 'exdos-icon-box';
 	}
 
 	/**
@@ -38,7 +38,7 @@ class Exdos_Service_Box extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return __( 'Exdos Services Box', 'exdos-core' );
+		return __( 'Exdos Icon Box', 'exdos-core' );
 	}
 
 	/**
@@ -109,9 +109,9 @@ class Exdos_Service_Box extends Widget_Base {
 	protected function register_controls_section() {
 		// Start Text Section
 		$this->start_controls_section(
-			'services_section_content',
+			'icon_section_content',
 			[
-				'label' => __( 'Services Content', 'exdos-core' ),
+				'label' => __( 'Icon Box', 'exdos-core' ),
 			]
 		);
 
@@ -164,84 +164,6 @@ class Exdos_Service_Box extends Widget_Base {
 		$this->end_controls_section();
 		// End Section 
 
-		// Start Button Section
-		$this->start_controls_section(
-			'hero_button_content',
-			[
-				'label' => __( 'Button', 'exdos-core' ),
-			]
-		);
-
-		$this->add_control(
-			'exdos_button',
-			[
-				'label' => __( 'Button Text', 'exdos-core' ),
-				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'This is button text' ),
-				'label_block' => true,
-			]
-		);
-
-		$this->add_control(
-			'exdos_button_url',
-			[
-				'label' => esc_html__( 'Link', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::URL,
-				'options' => [ 'url', 'is_external', 'nofollow' ],
-				'default' => [
-					'url' => '#',
-					'is_external' => false,
-					'nofollow' => false,
-					// 'custom_attributes' => '',
-				],
-				'label_block' => true,
-			]
-		);
-
-		$this->end_controls_section();
-		// End Button Section
-
-
-		// start repeater control
-		$this->start_controls_section(
-			'services_list_section',
-			[
-				'label' => esc_html__( 'Services List', 'textdomain' ),
-				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-			]
-		);
-
-		$repeater = new \Elementor\Repeater();
-
-		$repeater->add_control(
-			'services_list_name',
-			[
-				'label' => esc_html__( 'List Item', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::TEXT,
-				'default' => esc_html__( 'Branding Design' , 'textdomain' ),
-				'label_block' => true,
-			]
-		);
-
-		$this->add_control(
-			'services_list',
-			[
-				'label' => esc_html__( 'Services List', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::REPEATER,
-				'fields' => $repeater->get_controls(),
-				'default' => [
-					[
-						'services_list_name' => esc_html__( 'services_list_name', 'textdomain' ),
-					],
-					[
-						'services_list_name' => esc_html__( 'Research & Testing', 'textdomain' ),
-					],
-				],
-				'title_field' => '{{{ services_list_name }}}',
-			]
-		);
-
-		$this->end_controls_section();
 		
 	}
 
@@ -299,47 +221,19 @@ class Exdos_Service_Box extends Widget_Base {
 
 		?>
 
-
-			<div class="tpservices br-24 mb-30  wow tpFadeInUp" data-wow-duration="1.5s" data-wow-delay="0.2s">
-					<div class="tpservices__icon mb-25">
-						<span><?php \Elementor\Icons_Manager::render_icon( $settings['icon'], [ 'aria-hidden' => 'true' ] ); ?></span>
-					</div>
-
-					<?php if(!empty($settings['main_title'])) : ?>
-					<div class="tpservices__text ">
-
-						<h3 class="tpservices__title mb-15">
-						<?php if(!empty($settings['exdos_button_url']['url'])) : ?>
-
-							<a href="<?php echo esc_url($settings['exdos_button_url']['url'])?>"><?php echo exdos_core_kses($settings['main_title'])?></a>
-							<?php else : ?>
-
-							<?php echo exdos_core_kses($settings['main_title'])?>
-							<?php endif; ?>
-
-						</h3>
-					<?php endif; ?>
-
-					<?php if(!empty($settings['description'])) : ?>
-						<p><?php echo exdos_core_kses($settings['description'])?></p>
-					<?php endif; ?>
-
-						<div class="tpservices__list">
-							<ul>
-							<?php foreach($settings['services_list'] as $item) : ?>
-								<li><?php echo esc_html($item['services_list_name']); ?></li>
-							<?php endforeach; ?>
-							</ul>
-						</div>
-					</div>
-
-					<?php if(!empty($settings['exdos_button'])) : ?>
-					<div class="tpservices__btn mt-30">
-						<a <?php echo $this->get_render_attribute_string('button_arg'); ?>><?php echo esc_html($settings['exdos_button']); ?><i class="far fa-arrow-right"></i></a>
-					</div>
-					<?php endif; ?>
-
-				</div>
+		<!-- Start Icon Box CSS -->
+		<div class="tp-contact-info mb-30  wow tpFadeInUp text-center" data-wow-duration="1s" data-wow-delay="0.2s">
+			<div class="tp-contact-info-icon mb-10">
+				<span><?php \Elementor\Icons_Manager::render_icon( $settings['icon'], [ 'aria-hidden' => 'true' ] ); ?></span>
+			</div>
+			<div class="tp-contact-info-text">
+				<span class="mb-10 d-block"><?php echo exdos_core_kses($settings['main_title'])?></span>
+				<p>
+				<?php echo exdos_core_kses($settings['description'])?>
+				</p>
+			</div>
+        </div>
+		 <!-- End Icon Box CSS -->
 
 		<?php
 	}
@@ -363,4 +257,4 @@ class Exdos_Service_Box extends Widget_Base {
 }
 
 
-$widgets_manager->register( new Exdos_Service_Box() );
+$widgets_manager->register( new Exdos_Icon_Box() );
